@@ -22,7 +22,7 @@ public class ProductAdoDotNetController : ControllerBase
         connection.Open();
         
         string query = @"
-            SELECT ProductId, ProductName, Quantity, Price, DeleteFlag, CreatedDateTime, ModifiedDateTime
+            SELECT ProductId, ProductName, Quantity, Price, DeleteFlag, CreatedDateTime, ModifiedDateTime FROM Tbl_Product
             WHERE DeleteFlag = 0
             ORDER BY ProductId DESC";
         
@@ -57,7 +57,7 @@ public class ProductAdoDotNetController : ControllerBase
         connection.Open();
         
         string query = @"
-            SELECT ProductId, ProductName, Quantity, Price, DeleteFlag, CreatedDateTime, ModifiedDateTime
+            SELECT ProductId, ProductName, Quantity, Price, DeleteFlag, CreatedDateTime, ModifiedDateTime FROM Tbl_Product
             WHERE DeleteFlag = 0 AND ProductId = @ProductId";
         
         SqlCommand cmd = new SqlCommand(query, connection);
@@ -142,6 +142,7 @@ public class ProductAdoDotNetController : ControllerBase
             conditions += "Quantity = @Quantity,";
         if (request.Price is not null && request.Price > 0)
             conditions += "Price = @Price,";
+        conditions += "ModifiedDateTime = @ModifiedDateTime";
         
         if (conditions.Length == 0)
             return BadRequest("Invalid Request");
