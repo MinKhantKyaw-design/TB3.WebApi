@@ -33,7 +33,7 @@ namespace TB3.ConsoleAppConnectWithApi
         //}
         Start:
             Console.WriteLine("-- Welcome to Product API --");
-            Console.WriteLine("Choose Menu: 1 - Read, 2 - Create, 5 - Exit");
+            Console.WriteLine("Choose Menu: 1 - Read, 2 - Create, 3 - Update, 4 - Patch, 5 - Exit");
             int num = Convert.ToInt32(Console.ReadLine());
 
             HttpClientService httpClientService = new HttpClientService();
@@ -45,6 +45,12 @@ namespace TB3.ConsoleAppConnectWithApi
                     goto Start;
                 case 2:
                     await httpClientService.Create();
+                    goto Start;
+                case 3:
+                    await httpClientService.Update(); 
+                    goto Start;
+                case 4:
+                    await httpClientService.Patch();
                     goto Start;
                 case 5:
                 default:

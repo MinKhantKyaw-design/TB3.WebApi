@@ -30,7 +30,9 @@ public class ProductController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult GetProduct(int id)
     {
-        var item = _db.TblProducts.FirstOrDefault(x => x.ProductId == id);
+        var item = _db.TblProducts
+            .Where(x=>x.DeleteFlag == false)
+            .FirstOrDefault(x => x.ProductId == id);
         if (item is null)
         {
             return NotFound("Product not found.");
@@ -63,7 +65,9 @@ public class ProductController : ControllerBase
     [HttpPut("{id}")]
     public IActionResult UpdateProduct(int id, ProductUpdateRequestDto request)
     {
-        var item = _db.TblProducts.FirstOrDefault(x => x.ProductId == id);
+        var item = _db.TblProducts
+            .Where(x => x.DeleteFlag == false)
+            .FirstOrDefault(x => x.ProductId == id);
         if (item is null)
         {
             return NotFound("Product not found.");
@@ -82,7 +86,9 @@ public class ProductController : ControllerBase
     [HttpPatch("{id}")]
     public IActionResult PatchProduct(int id, ProductPatchRequestDto request)
     {
-        var item = _db.TblProducts.FirstOrDefault(x => x.ProductId == id);
+        var item = _db.TblProducts
+            .Where(x => x.DeleteFlag == false)
+            .FirstOrDefault(x => x.ProductId == id);
         if (item is null)
         {
             return NotFound("Product not found.");
@@ -105,7 +111,9 @@ public class ProductController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult DeleteProduct(int id)
     {
-        var item = _db.TblProducts.FirstOrDefault(x => x.ProductId == id);
+        var item = _db.TblProducts
+            .Where(x=>x.DeleteFlag==false)
+            .FirstOrDefault(x => x.ProductId == id);
         if (item is null)
         {
             return NotFound("Product not found.");

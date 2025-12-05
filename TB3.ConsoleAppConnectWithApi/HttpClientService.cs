@@ -61,4 +61,69 @@ public class HttpClientService
         var message = await response.Content.ReadAsStringAsync();
         Console.WriteLine(message);
     }
+
+        public async Task Update()
+        {
+            Console.Write("Please enter product id: ");
+            int productId = Convert.ToInt32(Console.ReadLine());
+
+            Console.Write("Please enter product name: ");
+            string productName = Console.ReadLine();
+
+            Console.Write("Please enter price: ");
+            decimal price = Convert.ToDecimal(Console.ReadLine());
+
+            Console.Write("Please enter quantity: ");
+            int quantity = Convert.ToInt32(Console.ReadLine());
+
+            ProductUpdateRequestDto requestDto = new ProductUpdateRequestDto
+            {
+                ProductName = productName,
+                Quantity = quantity,
+                Price = price
+            };
+
+            string requestjson = JsonConvert.SerializeObject(requestDto);
+
+            StringContent content = new StringContent(requestjson, Encoding.UTF8, Application.Json);
+
+            HttpClient client = new HttpClient();
+            var response = await client.PutAsync($"{_baseUrl}/api/Product/{productId}", content);
+            string message = await response.Content.ReadAsStringAsync();
+            Console.WriteLine(message);
+        }
+
+    public async Task Patch()
+    {
+        Console.Write("Please enter product id: ");
+        int productId = Convert.ToInt32(Console.ReadLine());
+
+        Console.Write("Please enter product name: ");
+        string productName = Console.ReadLine();
+
+
+        Console.Write("Please enter price: ");
+        string priceStr = Console.ReadLine();
+        decimal price = string.IsNullOrEmpty(priceStr) ? 0 : Convert.ToDecimal(priceStr);
+
+        Console.Write("Please enter quantity: ");
+        string qtyStr = Console.ReadLine();
+        int quantity = string.IsNullOrEmpty(qtyStr) ? 0 : Convert.ToInt32(qtyStr);
+
+        ProductUpdateRequestDto requestDto = new ProductUpdateRequestDto
+        {
+            ProductName = productName,
+            Quantity = quantity,
+            Price = price
+        };
+
+        string requestjson = JsonConvert.SerializeObject(requestDto);
+
+        StringContent content = new StringContent(requestjson, Encoding.UTF8, Application.Json);
+
+        HttpClient client = new HttpClient();
+        var response = await client.PatchAsync($"{_baseUrl}/api/Product/{productId}", content);
+        string message = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(message);
+    }
 }
