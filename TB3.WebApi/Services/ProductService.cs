@@ -76,7 +76,7 @@ public class ProductService
         return dto;
     }
 
-    public ProductGetByIdResponseDto GetProdcutById(int id)
+    public ProductGetByIdResponseDto GetProductById(int id)
     {
         ProductGetByIdResponseDto dto = new ProductGetByIdResponseDto();
         var item = _db.TblProducts
@@ -166,7 +166,8 @@ public class ProductService
 
         int result = _db.SaveChanges();
 
-        if(result > 0)
+        message = "Saving Failed.";
+        if (result > 0)
         {
             isSuccess = true;
             message = "Saving Successful.";
@@ -179,8 +180,6 @@ public class ProductService
             //};
             //return dto;
         }
-
-        message = "Saving Failed.";
         
         Response:
         dto = new ProductResponseDto
@@ -192,7 +191,7 @@ public class ProductService
         return dto;
     }
 
-    public ProductResponseDto Update(int id, ProductUpdateRequestDto requestDto)
+    public ProductResponseDto UpdateProduct(int id, ProductUpdateRequestDto requestDto)
     {
         bool isSuccess = false;
         string message = string.Empty;
@@ -231,11 +230,61 @@ public class ProductService
         int result = _db.SaveChanges();
 
         message = "Updating Failed.";
-
         if (result > 0)
         {
             isSuccess = true;
             message = "Updating Successful.";
+            goto Response;
+        }
+
+    Response:
+        dto = new ProductResponseDto
+        {
+            IsSuccess = isSuccess,
+            Message = message,
+        };
+
+        return dto;
+    }
+
+    public ProductResponseDto PatchProduct(int id, ProductPatchRequestDto requestDto)
+    {
+        bool isSuccess = false;
+        string message = string.Empty;
+        ProductResponseDto dto = new ProductResponseDto();
+
+        if(string.IsNullOrEmpty(requestDto.ProductName) && (requestDto.Price is null || requestDto.Price <= 0) && (requestDto.Quantity is null || requestDto.Quantity <= 0))
+        {
+            message = "No data to update.";
+            goto Response;
+        }
+
+        var item = _db.TblProducts
+            .Where(x => x.DeleteFlag == false)
+            .FirstOrDefault(x => x.ProductId == id);
+        if (item is null)
+        {
+            message = "Product Not Found";
+            goto Response;
+        }
+
+        if (!string.IsNullOrEmpty(requestDto.ProductName))
+            item.ProductName = requestDto.ProductName;
+
+        if (requestDto.Price is not null && requestDto.Price > 0)
+            item.Price = requestDto.Price ?? 0;
+
+        if (requestDto.Quantity is not null && requestDto.Quantity > 0)
+            item.Quantity = requestDto.Quantity ?? 0;
+
+        item.ModifiedDateTime = DateTime.Now;
+        int result = _db.SaveChanges();
+
+        message = "Patching Failed.";
+        if (result > 0)
+        {
+            isSuccess = true;
+            message = "Patching Successful.";
             goto Response;
         }
 
