@@ -9,12 +9,12 @@ namespace TB3.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductCategoryADODotNetController : ControllerBase
+    public class ProductCategoryAdoDotNetController : ControllerBase
     {
         private readonly AppDbContext _db;
         private readonly SqlConnectionStringBuilder _sqlConnectionStringBuilder;
 
-        public ProductCategoryADODotNetController()
+        public ProductCategoryAdoDotNetController()
         {
             _db = new AppDbContext();
             _sqlConnectionStringBuilder = new SqlConnectionStringBuilder()
