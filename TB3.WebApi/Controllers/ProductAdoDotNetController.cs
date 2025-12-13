@@ -12,20 +12,28 @@ namespace TB3.WebApi.Controllers;
 [ApiController]
 public class ProductAdoDotNetController : ControllerBase
 {
-    private readonly ProductAdoDotNetService _productAdoDotNetService;
+    private readonly IProductAdoDotNetService _productAdoDotNetService;
 
-    public ProductAdoDotNetController()
+    // Constructor Injection
+    // Method Injection
+    // Property Injection
+
+    //[Inject]
+    //private IProductAdoDotNetService ProductAdoDotNetService { get; set; }
+
+    public ProductAdoDotNetController(IProductAdoDotNetService productAdoDotNetService)
     {
-        _productAdoDotNetService = new ProductAdoDotNetService();
+        _productAdoDotNetService = productAdoDotNetService;
     }
 
     [HttpGet("{pageNo}/{pageSize}")]
+    //public IActionResult GetProducts([FromServices] IProductAdoDotNetService productAdoDotNetService, int pageNo, int pageSize)
     public IActionResult GetProducts(int pageNo, int pageSize)
     {
         var result = _productAdoDotNetService.GetProducts(pageNo, pageSize);
         if (!result.IsSuccess)
             return NotFound(result);
-        
+
         return Ok(result.Products);
     }
 
@@ -35,7 +43,7 @@ public class ProductAdoDotNetController : ControllerBase
         var result = _productAdoDotNetService.GetProduct(id);
         if (!result.IsSuccess)
             return BadRequest(result);
-        
+
         return Ok(result.Product);
     }
 
@@ -45,7 +53,7 @@ public class ProductAdoDotNetController : ControllerBase
         var result = _productAdoDotNetService.CreateProduct(request);
         if (!result.IsSuccess)
             return BadRequest(result);
-        
+
         return Ok(result);
     }
 
@@ -55,7 +63,7 @@ public class ProductAdoDotNetController : ControllerBase
         var result = _productAdoDotNetService.UpdateProduct(id, request);
         if (!result.IsSuccess)
             return BadRequest(result);
-        
+
         return Ok(result);
     }
 
@@ -65,7 +73,7 @@ public class ProductAdoDotNetController : ControllerBase
         var result = _productAdoDotNetService.PatchProduct(id, request);
         if (!result.IsSuccess)
             return BadRequest(result);
-        
+
         return Ok(result);
     }
 
@@ -75,7 +83,7 @@ public class ProductAdoDotNetController : ControllerBase
         var result = _productAdoDotNetService.DeleteProduct(id);
         if (!result.IsSuccess)
             return BadRequest(result);
-        
+
         return Ok(result);
     }
 }

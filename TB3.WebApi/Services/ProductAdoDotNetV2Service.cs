@@ -3,16 +3,9 @@ using TB3.WebApi.Controllers;
 
 namespace TB3.WebApi.Services;
 
-
-// Ctrl + R, I
-public class ProductAdoDotNetService : IProductAdoDotNetService
+public class ProductAdoDotNetV2Service : IProductAdoDotNetService
 {
-    private readonly string _connectionString;
-
-    public ProductAdoDotNetService(IConfiguration configuration)
-    {
-        _connectionString = configuration.GetConnectionString("DbConnection")!;
-    }
+    private readonly string _connectionString = "Server=.;Database=Batch3MiniPOS;User ID=sa;Password=sasa@123;TrustServerCertificate=True;";
 
     public ProductGetResponseDto GetProducts(int pageNo, int pageSize)
     {

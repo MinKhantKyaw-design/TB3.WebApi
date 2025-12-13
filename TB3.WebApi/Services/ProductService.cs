@@ -8,13 +8,13 @@ using TB3.WebApi.Controllers;
 namespace TB3.WebApi.Services;
 
 // Business Logic + Data Access
-public class ProductService
+public class ProductService : IProductService
 {
     private readonly AppDbContext _db;
 
-    public ProductService()
+    public ProductService(AppDbContext db)
     {
-        _db = new AppDbContext();
+        _db = db;
     }
 
     public ProductGetResponseDto GetProducts(int pageNo, int pageSize)
@@ -180,8 +180,8 @@ public class ProductService
             //};
             //return dto;
         }
-        
-        Response:
+
+    Response:
         dto = new ProductResponseDto
         {
             IsSuccess = isSuccess,
@@ -253,7 +253,7 @@ public class ProductService
         string message = string.Empty;
         ProductResponseDto dto = new ProductResponseDto();
 
-        if(string.IsNullOrEmpty(requestDto.ProductName) && (requestDto.Price is null || requestDto.Price <= 0) && (requestDto.Quantity is null || requestDto.Quantity <= 0))
+        if (string.IsNullOrEmpty(requestDto.ProductName) && (requestDto.Price is null || requestDto.Price <= 0) && (requestDto.Quantity is null || requestDto.Quantity <= 0))
         {
             message = "No data to update.";
             goto Response;

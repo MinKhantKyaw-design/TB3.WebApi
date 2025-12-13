@@ -7,19 +7,15 @@ using TB3.WebApi.Services;
 
 namespace TB3.WebApi.Controllers;
 
-// User Interface
-// https://localhost:7258/api/Product
 [Route("api/[controller]")]
 [ApiController]
 public class ProductController : ControllerBase
 {
-    //private readonly AppDbContext _db;
-    private readonly ProductService _productService;
+    private readonly IProductService _productService;
 
-    public ProductController()
+    public ProductController(IProductService productService)
     {
-        //_db = new AppDbContext();
-        _productService = new ProductService();
+        _productService = productService;
     }
 
     [HttpGet("{pageNo}/{pageSize}")]
